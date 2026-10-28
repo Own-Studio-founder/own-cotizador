@@ -24,14 +24,14 @@ window.OWN_CONFIG = {
       "monthly": true,
       "blurb": "Contenido mensual para tus redes. Elige cuántas piezas necesitas al mes.",
       "items": [
-        { "id": "post", "icon": "post", "name": "Post", "desc": "Diseño de post para el feed.", "days": "2–3 días hábiles por pieza", "max": 30,
-          "variants": [ { "key": "cliente", "label": "Fotos del cliente", "pts": 1 }, { "key": "own", "label": "Fotos de Own", "pts": 2 } ] },
+        { "id": "post", "icon": "post", "name": "Post", "desc": "Diseño de post para el feed. Sin fotos tuyas usamos stock, ilustración y gráficos.", "days": "2–3 días hábiles por pieza", "max": 30,
+          "variants": [ { "key": "cliente", "label": "Con tus fotos", "pts": 1 }, { "key": "own", "label": "Sin fotos tuyas", "pts": 2 } ] },
         { "id": "historia", "icon": "historia", "name": "Historia", "desc": "Historia vertical para Instagram o Facebook.", "days": "2–3 días hábiles por pieza", "max": 30,
-          "variants": [ { "key": "cliente", "label": "Fotos del cliente", "pts": 1 }, { "key": "own", "label": "Fotos de Own", "pts": 2 } ] },
+          "variants": [ { "key": "cliente", "label": "Con tus fotos", "pts": 1 }, { "key": "own", "label": "Sin fotos tuyas", "pts": 2 } ] },
         { "id": "carrusel", "icon": "carrusel", "name": "Carrusel", "desc": "Varias láminas para contar algo completo.", "days": "2–3 días hábiles por pieza", "max": 12,
-          "variants": [ { "key": "cliente", "label": "Fotos del cliente", "pts": 2 }, { "key": "own", "label": "Fotos de Own", "pts": 4 } ] },
+          "variants": [ { "key": "cliente", "label": "Con tus fotos", "pts": 2 }, { "key": "own", "label": "Sin fotos tuyas", "pts": 4 } ] },
         { "id": "video", "icon": "video", "name": "Video corto", "desc": "Reel o video vertical con edición.", "days": "3–4 días hábiles por video", "max": 12,
-          "variants": [ { "key": "edicion", "label": "Solo edición", "pts": 2 }, { "key": "grabacion", "label": "Grabamos y editamos", "pts": 5 } ] },
+          "variants": [ { "key": "edicion", "label": "Con tu material", "pts": 2 }, { "key": "grabacion", "label": "Con material de stock", "pts": 5 } ] },
         { "id": "copy", "icon": "copy", "name": "Copy mensual", "desc": "Los textos de tus publicaciones del mes.", "pts": 4, "max": 1 },
         { "id": "plan", "icon": "plan", "name": "Plan de contenido", "desc": "Calendario del mes con temas y fechas.", "pts": 3, "max": 1 }
       ]
@@ -103,21 +103,21 @@ window.OWN_CONFIG = {
       "blurb": "Para empezar a publicar con constancia.",
       "items": [ { "id": "post", "qty": 8, "variant": "cliente" }, { "id": "historia", "qty": 2, "variant": "cliente" }, { "id": "plan", "qty": 1 } ],
       "includes": ["8 posts", "2 historias", "Plan de contenido"],
-      "note": "Con fotos del cliente. Mínimo 3 meses."
+      "note": "Con tus fotos. Mínimo 3 meses."
     },
     {
       "id": "redes-medio", "slot": "mensual", "tag": "MENSUAL", "name": "Redes Medio",
       "blurb": "Contenido variado y textos incluidos.",
       "items": [ { "id": "post", "qty": 12, "variant": "cliente" }, { "id": "historia", "qty": 6, "variant": "cliente" }, { "id": "carrusel", "qty": 2, "variant": "cliente" }, { "id": "video", "qty": 1, "variant": "edicion" }, { "id": "copy", "qty": 1 }, { "id": "plan", "qty": 1 } ],
-      "includes": ["12 posts", "6 historias", "2 carruseles", "1 video (edición)", "Copy mensual", "Plan de contenido"],
-      "note": "Con fotos del cliente. Mínimo 3 meses."
+      "includes": ["12 posts", "6 historias", "2 carruseles", "1 video con tu material", "Copy mensual", "Plan de contenido"],
+      "note": "Con tus fotos. Mínimo 3 meses."
     },
     {
       "id": "redes-deluxe", "slot": "mensual", "tag": "MENSUAL", "name": "Redes Deluxe",
       "blurb": "Presencia completa, con video.",
       "items": [ { "id": "post", "qty": 18, "variant": "cliente" }, { "id": "historia", "qty": 10, "variant": "cliente" }, { "id": "carrusel", "qty": 4, "variant": "cliente" }, { "id": "video", "qty": 4, "variant": "edicion" }, { "id": "copy", "qty": 1 }, { "id": "plan", "qty": 1 } ],
-      "includes": ["18 posts", "10 historias", "4 carruseles", "4 videos (edición)", "Copy mensual", "Plan de contenido"],
-      "note": "Con fotos del cliente. Mínimo 3 meses."
+      "includes": ["18 posts", "10 historias", "4 carruseles", "4 videos con tu material", "Copy mensual", "Plan de contenido"],
+      "note": "Con tus fotos. Mínimo 3 meses."
     },
     {
       "id": "marca-completa", "slot": "proyecto", "tag": "PROYECTO", "name": "Marca completa",
@@ -144,7 +144,7 @@ window.OWN_CONFIG = {
       "items": [ { "id": "identidad", "qty": 1 }, { "id": "landing", "qty": 1 }, { "id": "post", "qty": 12, "variant": "cliente" }, { "id": "historia", "qty": 6, "variant": "cliente" }, { "id": "carrusel", "qty": 2, "variant": "cliente" }, { "id": "video", "qty": 1, "variant": "edicion" }, { "id": "copy", "qty": 1 }, { "id": "plan", "qty": 1 } ],
       "includes": ["Identidad visual básica", "Landing page", "Redes Medio cada mes"],
       "bonus": [ { "id": "voz", "qty": 1 }, { "id": "auditoria", "qty": 1 } ],
-      "note": "Redes con fotos del cliente. Mínimo 3 meses."
+      "note": "Redes con tus fotos. Mínimo 3 meses."
     }
   ],
   "delivery": [
