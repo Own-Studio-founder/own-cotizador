@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Admin · Own cotizador</title>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .adm { max-width: 980px; margin: 0 auto; padding-block: 40px 100px; }
+  .adm h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 900; letter-spacing: -.04em; margin-bottom: 8px; }
+  .adm h2 { font-size: 1.2rem; font-weight: 900; margin: 40px 0 12px; letter-spacing: .1em; text-transform: uppercase; }
+  .adm .how { max-width: 62ch; margin-bottom: 8px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; }
+  .adm label { display: grid; gap: 4px; font-weight: 700; font-size: .85rem; }
+  .adm input, .adm textarea { border: var(--line); background: var(--paper); border-radius: 3px; padding: .55em .7em; width: 100%; }
+  .adm textarea { min-height: 160px; font-family: ui-monospace, Menlo, monospace; font-size: .8rem; }
+  .tbl { width: 100%; border-collapse: collapse; }
+  .tbl th { text-align: left; font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; padding: 6px; border-bottom: var(--line); }
+  .tbl td { padding: 6px; border-bottom: 2px dashed var(--ink); vertical-align: middle; }
+  .tbl td input { min-width: 70px; }
+  .scroll { overflow-x: auto; }
+  .bar2 { position: sticky; bottom: 0; background: var(--sun); border-top: var(--line); padding: 12px 0 calc(12px + env(safe-area-inset-bottom, 0px)); display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 40px; }
+  .bar2 span { font-weight: 700; flex: 1 1 200px; }
+</style>
+</head>
+<body>
+<div class="adm">
+  <h1>Admin del cotizador</h1>
+  <p class="how">Cambia precios y textos, descarga <b>config.js</b> y súbelo a tu repositorio de GitHub reemplazando el anterior. En unos minutos tu página se actualiza. Esta página no guarda nada en internet: solo te genera el archivo.</p>
+
+  <h2>General</h2>
+  <div class="grid">
+    <label>Precio por punto (MXN)<input id="rate" type="number" min="0" step="10"></label>
+    <label>WhatsApp (con 52, sin espacios)<input id="whatsapp" type="text" inputmode="numeric"></label>
+    <label>Usuario de Instagram<input id="handle" type="text"></label>
+    <label>Anticipo de proyectos (%)<input id="advancePct" type="number" min="0" max="100"></label>
+    <label>Vigencia (días)<input id="validDays" type="number" min="1"></label>
+    <label>Meses mínimos en planes<input id="minMonths" type="number" min="1"></label>
+  </div>
+
+  <h2>Descuento por volumen</h2>
+  <div class="grid" id="tiers"></div>
+
+  <div id="cats"></div>
+
+  <h2>Términos (uno por línea)</h2>
+  <textarea id="terms"></textarea>
+
+  <h2>Avanzado: paquetes, tiempos y todo lo demás</h2>
+  <p class="how">Aquí está el archivo completo en JSON. Si cambias algo aquí, pulsa “Aplicar JSON” y se actualiza arriba.</p>
+  <textarea id="json" style="min-height:260px"></textarea>
+  <div style="margin-top:10px"><button class="btn btn--line" id="applyJson" type="button">Aplicar JSON</button></div>
+
+  <div class="bar2">
+    <span id="msg">Sin cambios todavía.</span>
+    <button class="btn btn--ink" id="save" type="button">Descargar config.js</button>
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script>
+(function () {
+  var C = JSON.parse(JSON.stringify(window.OWN_CONFIG));
+  var $ = function (s) { return document.querySelector(s); };
+  var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]; }); };
+  var msg = function (t) { $('#msg').textContent = t; };
+
+  function renderGeneral() {
+    ['rate', 'whatsapp', 'handle', 'advancePct', 'validDays', 'minMonths'].forEach(function (k) { $('#' + k).value = C[k]; });
+    $('#tiers').innerHTML = C.tiers.map(function (t, i) {
+      return '<label>Desde (pts)<input type="number" data-t="' + i + '" data-f="min" value="' + t.min + '"></label><label>Descuento (%)<input type="number" data-t="' + i + '" data-f="pct" value="' + t.pct + '"></label>';
+    }).join('');
+    $('#terms').value = C.terms.join('\n');
+  }
+  function renderCats() {
+    $('#cats').innerHTML = C.categories.map(function (cat, ci) {
+      var rows = cat.items.map(function (it, ii) {
+        var pts;
+        if (it.variants) pts = it.variants.map(function (v, vi) { return '<label>' + esc(v.label) + '<input type="number" data-c="' + ci + '" data-i="' + ii + '" data-v="' + vi + '" value="' + v.pts + '"></label>'; }).join('');
+        else if (it.quote) pts = '<em>Por cotizar</em>';
+        else if (it.price != null) pts = '<label>Pesos<input type="number" data-c="' + ci + '" data-i="' + ii + '" data-f="price" value="' + it.price + '"></label>';
+        else pts = '<label>Puntos<input type="number" data-c="' + ci + '" data-i="' + ii + '" data-f="pts" value="' + it.pts + '"></label>';
+        return '<tr><td><input data-c="' + ci + '" data-i="' + ii + '" data-f="name" value="' + esc(it.name) + '"></td><td><input data-c="' + ci + '" data-i="' + ii + '" data-f="desc" value="' + esc(it.desc) + '"></td><td>' + pts + '</td></tr>';
+      }).join('');
+      return '<h2>' + esc(cat.name) + (cat.monthly ? ' (mensual)' : '') + '</h2><div class="scroll"><table class="tbl"><thead><tr><th>Nombre</th><th>Descripción</th><th>Precio</th></tr></thead><tbody>' + rows + '</tbody></table></div>';
+    }).join('');
+  }
+  function syncJson() { $('#json').value = JSON.stringify(C, null, 2); }
+  function all() { renderGeneral(); renderCats(); syncJson(); }
+  all();
+
+  document.addEventListener('input', function (e) {
+    var t = e.target, n = Number(t.value);
+    if (t.id && C.hasOwnProperty(t.id) && t.id !== 'terms' && t.id !== 'json') { C[t.id] = (t.type === 'number') ? n : t.value; }
+    else if (t.id === 'terms') C.terms = t.value.split('\n').map(function (s) { return s.trim(); }).filter(Boolean);
+    else if (t.hasAttribute('data-t')) C.tiers[t.getAttribute('data-t')][t.getAttribute('data-f')] = n;
+    else if (t.hasAttribute('data-c')) {
+      var it = C.categories[t.getAttribute('data-c')].items[t.getAttribute('data-i')];
+      if (t.hasAttribute('data-v')) it.variants[t.getAttribute('data-v')].pts = n;
+      else { var f = t.getAttribute('data-f'); it[f] = (f === 'name' || f === 'desc') ? t.value : n; }
+    } else return;
+    if (t.id !== 'json') syncJson();
+    msg('Hay cambios sin descargar.');
+  });
+  $('#applyJson').addEventListener('click', function () {
+    try { C = JSON.parse($('#json').value); all(); msg('JSON aplicado.'); } catch (err) { msg('El JSON tiene un error: ' + err.message); }
+  });
+  $('#save').addEventListener('click', function () {
+    var head = '/* OWN STUDIO · Configuración del cotizador (generado desde admin.html) */\nwindow.OWN_CONFIG = ';
+    var blob = new Blob([head + JSON.stringify(C, null, 2) + ';\n'], { type: 'text/javascript' });
+    var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'config.js';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    msg('Descargado. Súbelo a GitHub para publicar los cambios.');
+  });
+})();
+</script>
+</body>
+</html>

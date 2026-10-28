@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cotiza con Own Studio</title>
+<meta name="description" content="Arma tu cotización de diseño y marketing con Own Studio. El precio se calcula solo.">
+<meta name="theme-color" content="#1F1A17">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Satoshi (Fontshare, licencia libre para uso comercial) -->
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="top">
+      <a class="logo" href="#" aria-label="Own Studio">OWN<svg class="star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C12.8 7.5 16.5 11.2 24 12 16.5 12.8 12.8 16.5 12 24 11.2 16.5 7.5 12.8 0 12 7.5 11.2 11.2 7.5 12 0Z"/></svg></a>
+      <span class="top__handle" id="handle">@ownstudio.hq</span>
+    </div>
+    <div class="hero__body">
+      <div style="position:relative">
+        <span class="hand hero__hand" aria-hidden="true">tú decides</span>
+        <h1>Arma tu <span class="mark">cotización.</span></h1>
+        <p class="lede">Cada servicio vale ciertos puntos y los puntos se convierten en pesos. Suma lo que necesites con los botones <b>+</b> y el precio se calcula solo.</p>
+      </div>
+      <ol class="steps" aria-label="Cómo funciona">
+        <li class="steps__title" style="display:block">así de fácil</li>
+        <li><b>1</b><span>Elige un paquete o suma servicios.</span></li>
+        <li><b>2</b><span>Mira tu total al momento.</span></li>
+        <li><b>3</b><span>Descarga tu cotización o mándanosla por WhatsApp.</span></li>
+      </ol>
+    </div>
+    <svg class="star hero__star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C12.8 7.5 16.5 11.2 24 12 16.5 12.8 12.8 16.5 12 24 11.2 16.5 7.5 12.8 0 12 7.5 11.2 11.2 7.5 12 0Z"/></svg>
+  </div>
+</header>
+
+<main class="wrap layout">
+  <section class="main" aria-label="Servicios">
+    <div class="tabs" role="tablist" id="tabs" aria-label="Categorías"></div>
+    <div id="panel" role="tabpanel" tabindex="-1"></div>
+  </section>
+
+  <aside class="receipt-wrap" id="receiptWrap" aria-label="Tu cotización">
+    <div class="receipt-top">
+      <button class="btn btn--line receipt__close" id="closeReceipt" type="button">Seguir agregando</button>
+    </div>
+    <div class="receipt" id="receipt"></div>
+  </aside>
+</main>
+
+<div class="bar" id="bar">
+  <div class="bar__sum"><small id="barLabel">Tu total</small><b class="num" id="barTotal">$0</b></div>
+  <button class="btn" id="openReceipt" type="button">Ver cotización</button>
+</div>
+
+<section class="terms" aria-labelledby="tt">
+  <div class="wrap terms__grid">
+    <div>
+      <h2 id="tt">Antes de arrancar <span class="hand">léelo</span></h2>
+      <ol id="terms"></ol>
+    </div>
+    <div class="deliv">
+      <h3>Tiempos de entrega</h3>
+      <dl id="delivery"></dl>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap footer__in">
+    <p class="slogan">You own it. <i>We build it.</i></p>
+    <p><span id="handle2">@ownstudio.hq</span> · Estudio creativo. México.</p>
+  </div>
+</footer>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
